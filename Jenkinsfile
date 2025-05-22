@@ -47,8 +47,8 @@ pipeline {
                 sh '''
                     npm install serve
                     
-                    node_modules/.bin/serve -s build 
-                  # sleep 10
+                    node_modules/.bin/serve -s build & # SIGHN & means running server on background and continue pipeline
+                   sleep 10
                     npx playwright test
                 '''
             }
