@@ -41,6 +41,13 @@ pipeline {
 
 
         }
+
+   }
+   post{
+    always{
+       // junit 'C:\Users\Acer\Documents\Learn_Jenkins_Vdespa\test-results\junit.xml'
+       junit 'test-results/junit.xml'
+    }
    }
         
 }                  
