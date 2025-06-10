@@ -15,6 +15,8 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
+                    npm install --save-dev jest-junit
+
                     npm ci
                     npm run build
                     ls -la
