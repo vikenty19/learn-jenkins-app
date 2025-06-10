@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-
+/*
         stage('Build') {
             agent {
                 docker {
@@ -22,7 +22,7 @@ pipeline {
                     ls -la
                 '''
             }
-        }
+        }*/
         stage('Test'){
             agent {
                 docker {
@@ -43,12 +43,32 @@ pipeline {
 
 
         }
+        stage('E2E'){
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+            
+            steps{
+                sh '''
+                test -f build/index.html
+                npm test
+                '''
+
+
+            }
+
+
+
+        }
 
    }
    post{
-    always{
+        always{
        // junit 'C:\Users\Acer\Documents\Learn_Jenkins_Vdespa\test-results\junit.xml'
-         junit 'test-results/junit.xml'
+             junit 'junit-results/junit.xml'
     }
    }
         
