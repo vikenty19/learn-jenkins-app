@@ -1,8 +1,11 @@
 pipeline {
     agent any
+   /* environment{
+        NETLIFY_SITE_ID ='e736bcd4-434d-488a-9fc2-ec43a479515b'
+    }*/
 
     stages {
-/*
+
         stage('Build') {
             agent {
                 docker {
@@ -15,14 +18,12 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm install --save-dev jest-junit
-
                     npm ci
                     npm run build
                     ls -la
                 '''
             }
-        }*/
+        }
         stage('Tests'){
            parallel{
                 stage('Unit Test'){
@@ -80,7 +81,24 @@ pipeline {
 
             }
         
-
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                  npm install  netlify-cli
+                  node_modules/.bin/netlify --version
+                '''
+            }
+        } 
+   
+   
+  
+   
    }
   
         
