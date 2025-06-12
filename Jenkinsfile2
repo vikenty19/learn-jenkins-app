@@ -1,11 +1,13 @@
 pipeline {
     agent any
-    environment{
+
+    environment {
         NETLIFY_SITE_ID ='e736bcd4-434d-488a-9fc2-ec43a479515b'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-        }
+    }
 
-      stages {
+    stages {
+
         stage('Build') {
             agent {
                 docker {
@@ -83,7 +85,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli@20.1.1
+                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
                     echo "Deploying to staging. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
@@ -101,7 +103,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli@20.1.1
+                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
@@ -119,7 +121,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'PUT YOUR NETLIFY SITE URL HERE'
+                CI_ENVIRONMENT_URL = 'https://imaginative-lolly-e4ee67.netlify.app'
             }
 
             steps {
@@ -135,8 +137,5 @@ pipeline {
             }
         }
     }
- 
-     
-}                  
-
+}
 
