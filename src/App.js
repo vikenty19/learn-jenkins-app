@@ -18,6 +18,7 @@ function App() {
       <p>
    {/*      Application version:{process.env.REACT_APP_VERSION}*/}
           Application version:1.2.3
+      </p>    
     </div>
   );
 }
