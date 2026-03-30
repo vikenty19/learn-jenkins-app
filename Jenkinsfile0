@@ -20,43 +20,47 @@ pipeline {
                 '''
                 }
             }*/
-        stage('Test'){
-              agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
+        stage('Run tests') {
+             parallel {
+                stage('Test'){
+                    agent{
+                        docker{
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps{
+                        echo "Test stage"
+                        sh '''             
+                        test -f build/index.html
+                        npm test
+                        '''
+
+                    }
                 }
-            }
-            steps{
-                echo "Test stage"
-                sh '''             
-                test -f build/index.html
-                npm test
-                '''
-
-            }
-          }
 
 
-        stage('E2E Test'){
-              agent{
-                docker{
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                   
-                }
-            }
-            steps{
-                echo "E2E Test stage"
-                sh '''             
-                      npm install  serve                    #install serve package to serve the build folder
-                      node_modules/.bin/serve -s build &       #serve the build folder & run it in the background
-                      sleep 10                              #wait for the server to start
-                      npx playwright test --reporter html               #run the tests and generate an html
-                '''
+                stage('E2E Test'){
+                    agent{
+                        docker{
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        
+                        }
+                    }
+                    steps{
+                        echo "E2E Test stage"
+                        sh '''             
+                            npm install  serve                    #install serve package to serve the build folder
+                            node_modules/.bin/serve -s build &       #serve the build folder & run it in the background
+                            sleep 10                              #wait for the server to start
+                            npx playwright test --reporter html               #run the tests and generate an html
+                        '''
 
-            }
-          }  
+                    }
+                } 
+                    }
+ 
         }
 
     post{
