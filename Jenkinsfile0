@@ -52,7 +52,7 @@ pipeline {
                       npm install  serve                    #install serve package to serve the build folder
                       node_modules/.bin/serve -s build &       #serve the build folder & run it in the background
                       sleep 10                              #wait for the server to start
-                      npx playwright test                  #run the tests and generate an html
+                      npx playwright test --reporter html               #run the tests and generate an html
                 '''
 
             }
