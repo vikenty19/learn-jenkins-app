@@ -90,12 +90,29 @@ pipeline {
                     sh '''
                         npm install netlify-cli@20.1.1 
                         node_modules/.bin/netlify --version
+                    echo "Deploying to staging . site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build  #produces a draft deploy, create a temporary URL that can be used for testing before going to production
+                    '''
+                }
+            }
+            stage('Deploy prod') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+                steps {
+                    sh '''
+                        npm install netlify-cli@20.1.1 
+                        node_modules/.bin/netlify --version
                     echo "Deploying to Netlify site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod #produces a production deploy, remove --prod for a draft deploy
                     '''
                 }
-            }
+            }    
         stage('Production E2E') {
                 agent {
                     docker {
