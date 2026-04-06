@@ -6,7 +6,7 @@ pipeline {
         NETLIFY_AUTH_TOKEN=credentials('netlify-token')
     }
 
-    stages {
+    stages  {
         
 
         stage('Build') {
@@ -109,8 +109,8 @@ pipeline {
             }
                 environment {
                 
-                    CI_ENVIRONMENT_URL="$env.STAGING_URL" 
-                
+                    CI_ENVIRONMENT_URL="${env.STAGING_URL}" 
+                }
             steps {
                 sh '''
                     npx playwright test  --reporter=html
