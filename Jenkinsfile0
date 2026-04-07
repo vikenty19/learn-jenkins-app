@@ -97,8 +97,9 @@ pipeline {
                     node_modules/.bin/netlify --version
                     echo "Deploying to staging . site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --json > deploy_output.json)  # produces a draft deploy, create a temporary URL that can be used for testing before going to production
-                    CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy_output.json # extract the deploy URL from the JSON output and set it as an environment variable
+                    // # produces a draft deploy, create a temporary URL that can be used for testing before going to production
+                    node_modules/.bin/netlify deploy --dir=build --json > deploy_output.json
+                    CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deploy_output.json )
                     npx playwright test  --reporter=html
                 '''
             }
