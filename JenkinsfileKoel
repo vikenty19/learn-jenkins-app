@@ -1,24 +1,18 @@
-pipeline{
-    agent {
-        docker{
-            image 'maven:3.8.4-openjdk-17'
-           
-        }
-    }
-    stages{
-        stage('Build'){
-            steps{
-                sh'''
-                  mvn clean compile
-                '''
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'ls -la'
+                sh 'mvn clean compile'
             }
         }
-        stage('Test'){
-        steps{
-            sh'''
-            mvn test -DincludeTags=smoke
-            '''
+
+        stage('Test') {
+            steps {
+                sh 'mvn test -DincludeTags=smoke'
+            }
         }
-    }    
     }
 }
